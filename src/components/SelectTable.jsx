@@ -1,10 +1,7 @@
 import React from "react";
 
 function SelectTable(props) {
-  const tables = props.tables;
-  const selectedTable = props.selectedTable;
-  const setSelectedTable = props.setSelectedTable;
-  const nextStep = props.nextStep;
+  const { tables, selectedTable, setSelectedTable, nextStep, prevStep } = props;
 
   function handleClick(id) {
     setSelectedTable(id);
@@ -12,34 +9,47 @@ function SelectTable(props) {
 
   if (tables.length === 0) {
     return (
-      <div>
+      <div className="form-container">
         <h2>Välj bord</h2>
         <p>Inga tillgängliga bord</p>
+        <button onClick={prevStep} className="btn btn-secondary mt-3">
+          Tillbaka
+        </button>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="form-container text-center">
       <h2>Välj bord</h2>
-      <ul>
+
+      <div className="d-flex flex-wrap justify-content-center gap-3 mb-3">
         {tables.map((table) => {
           const isSelected = selectedTable === table.id;
-          const buttonStyle = {
-            backgroundColor: isSelected ? "lightgreen" : "white"
-          };
           return (
-            <li key={table.id}>
-              <button onClick={() => handleClick(table.id)} style={buttonStyle}>
-                Bord {table.bordNummer} - Kapacitet: {table.kapacitet}
-              </button>
-            </li>
+            <button
+              key={table.id}
+              className={`btn ${isSelected ? "btn-primary" : "btn-light"}`}
+              onClick={() => handleClick(table.id)}
+            >
+              Bord {table.bordNummer} - Kapacitet: {table.kapacitet}
+            </button>
           );
         })}
-      </ul>
-      <button onClick={nextStep} disabled={selectedTable === null} style={{ marginTop: "10px" }}>
-        Nästa
-      </button>
+      </div>
+
+      <div className="d-flex justify-content-center gap-2">
+        <button onClick={prevStep} className="btn btn-secondary">
+          Tillbaka
+        </button>
+        <button
+          onClick={nextStep}
+          disabled={selectedTable === null}
+          className="btn btn-dark"
+        >
+          Nästa
+        </button>
+      </div>
     </div>
   );
 }
